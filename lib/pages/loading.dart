@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:world_time/services/world_time.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -14,9 +15,10 @@ class _LoadingState extends State<Loading> {
       location: "Upleta",
       flag: "Upleta.png",
       url: "Asia%2FKolkata",
+      // url: "America%2FLos_Angeles",
     );
     await instance.getdata();
-    //by this we can transfer the data to the home route
+    // by this we can transfer the data to the home route
     Navigator.pushReplacementNamed(
       context,
       '/home',
@@ -24,6 +26,7 @@ class _LoadingState extends State<Loading> {
         'location': instance.location,
         'flag': instance.flag,
         'time': instance.time,
+        'isDay': instance.isDay,
       },
     );
   }
@@ -38,10 +41,12 @@ class _LoadingState extends State<Loading> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      body: Padding(
-        padding: const EdgeInsets.all(50.0),
-        child: Text('loading', style: TextStyle(color: Colors.white)),
-      ),
+      body: Container(
+        child: SpinKitSpinningLines(
+              color: Colors.white,
+              size: 230.0,
+            ),
+      )
     );
   }
 }

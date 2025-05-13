@@ -8,6 +8,7 @@ class WorldTime{
   late String location;
   late String flag;
   late String url;
+  late bool isDay;
 
   WorldTime({required this.location,required this.flag,required this.url});
 
@@ -18,6 +19,7 @@ class WorldTime{
           Uri.parse('https://timeapi.io/api/time/current/zone?timeZone=$url'));
       Map res = jsonDecode(response.body);
       DateTime dt = DateTime.parse(res['dateTime'] as String);
+      isDay=dt.hour>6 && dt.hour<20 ? true : false;
       time=DateFormat.jm().format(dt);
     }
     catch(e){

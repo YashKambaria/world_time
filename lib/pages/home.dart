@@ -12,47 +12,57 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> data =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    String pathOfBg = data['isDay'] ? 'day.png' : 'night.png';
+    Color bgColor=data['isDay']?Colors.blue:Colors.indigo;
+
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: bgColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 120, 0, 0),
-          child: Column(
-            children: [
-              TextButton.icon(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor:Colors.white,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/$pathOfBg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 120, 0, 0),
+            child: Column(
+              children: [
+                TextButton.icon(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
                   ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/location');
-                },
-                icon: Icon(Icons.edit_location),
-                label: Text("Edit location"),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    data['location'],
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                      color: Colors.tealAccent
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/location');
+                  },
+                  icon: Icon(Icons.edit_location),
+                  label: Text("Edit location"),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      data['location'],
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                        color: Colors.tealAccent,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20,),
-              Text(data['time'],
-              style:TextStyle(
-                fontSize: 70,
-                color: Colors.white60
-              ) ,
-              ),
-            ],
+                  ],
+                ),
+                SizedBox(height: 20),
+                Text(
+                  data['time'],
+                  style: TextStyle(fontSize: 70, color: Colors.white60),
+                ),
+              ],
+            ),
           ),
         ),
       ),
