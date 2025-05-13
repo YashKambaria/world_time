@@ -12,7 +12,7 @@ class _LocationState extends State<Location> {
   Widget build(BuildContext context) {
     print("build only");
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.black87,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,

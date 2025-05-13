@@ -1,5 +1,6 @@
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class WorldTime{
 
@@ -12,9 +13,17 @@ class WorldTime{
 
 
   Future<void> getdata () async {
-    Response response= await get(Uri.parse('https://timeapi.io/api/time/current/zone?timeZone=$url'));
-    Map res=jsonDecode(response.body);
-    time=res['time'];
+    try {
+      Response response = await get(
+          Uri.parse('https://timeapi.io/api/time/current/zone?timeZone=$url'));
+      Map res = jsonDecode(response.body);
+      DateTime dt = DateTime.parse(res['dateTime'] as String);
+      time=DateFormat.jm().format(dt);
+    }
+    catch(e){
+      print('error is here $e');
+      time="Unable to fetch time";
+    }
   }
 
 }
