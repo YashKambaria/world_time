@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'package:world_time/services/world_time.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -10,21 +9,29 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  void getdata () async {
-      Response response= await get(Uri.parse('https://jsonplaceholder.typicode.com/todos/1'));
-      Map res=jsonDecode(response.body);
-      print(res['title']);
+  void setUpWorldTime() async{
+    WorldTime instance=WorldTime(location: "Upleta", flag: "Upleta.png", url: "Asia%2FKolkata");
+    await instance.getdata();
+    //by this we can transfer the data to the home route
+    Navigator.pushReplacementNamed(context, '/home',arguments: {
+      'location':instance.location,
+      'flag':instance.flag,
+      'time':instance.time
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    getdata();
+    setUpWorldTime();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("This is loading screen"),
+      body: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Text('loading'),
+      ),
     );
   }
 }
