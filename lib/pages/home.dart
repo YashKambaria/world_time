@@ -8,10 +8,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Map<String, dynamic> data = {
+    'time': 'Unknown',
+    'location': 'Unknown',
+    'flag': '',
+    'isDay': true,
+  };
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> data =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    //now the data will be rebuild here so we will keep ternary operator here
+    if(data['time']=="Unknown"){
+      data = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    } else{
+      data=data;
+    }
+
 
     String pathOfBg = data['isDay'] ? 'day.png' : 'night.png';
     Color bgColor=data['isDay']?Colors.blue:Colors.indigo;
@@ -35,8 +47,15 @@ class _HomeState extends State<Home> {
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/location');
+                  onPressed: () async {
+                    dynamic result=await Navigator.pushNamed(context, '/location');
+                    //after getting this task done we will update it by setState
+                    setState(() {
+                      data['time']=result['time'];
+                      data['location']=result['location'];
+                      data['flag']=result['flag'];
+                      data['isDay']=result['isDay'];
+                    });
                   },
                   icon: Icon(Icons.edit_location),
                   label: Text("Edit location"),

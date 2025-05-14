@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:world_time/services/world_time.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Location extends StatefulWidget {
   const Location({super.key});
@@ -20,6 +21,22 @@ class _LocationState extends State<Location> {
     WorldTime(url: 'Asia%2FJakarta', location: 'Jakarta', flag: 'indonesia.png'),
     WorldTime(location: "Upleta", flag: "india.png", url: "Asia%2FKolkata"),
   ];
+  bool _loading=false;
+
+  void updateTime(index) async{
+    setState(() {
+      _loading=true;
+    });
+      WorldTime instance = locations[index];
+      await instance.getdata();
+      //now we just want to navigate back to the home screen with the updated time
+      Navigator.pop(context,{
+        'location': instance.location,
+        'flag': instance.flag,
+        'time': instance.time,
+        'isDay': instance.isDay,
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +49,14 @@ class _LocationState extends State<Location> {
         backgroundColor: Colors.blue[900],
         title: Text("Choose Location", style: TextStyle(color: Colors.white)),
       ),
-      body: ListView.builder(
+      body: _loading?
+          Center(
+            child: SpinKitCubeGrid(
+              color: Colors.white,
+              size: 150,
+            ),
+          )
+      :ListView.builder(
         itemCount: locations.length,
         itemBuilder:(context,index){
           return Padding(
@@ -40,7 +64,7 @@ class _LocationState extends State<Location> {
             child: Card(
               child: ListTile(
                 onTap: (){
-
+                  updateTime(index);
                 },
                 title: Text(locations[index].location,
                 style: TextStyle(
@@ -56,6 +80,7 @@ class _LocationState extends State<Location> {
           );
         },
       ),
+
     );
   }
 }
